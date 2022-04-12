@@ -49,3 +49,6 @@
 
 [pull]
   rebase = false
+[user]
+	email = ducu_yusuke@hotmail.com
+	name = Eduardo
