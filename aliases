@@ -7,3 +7,16 @@ alias serve='ruby -run -e httpd . -p 8000' # Or python -m SimpleHTTPServer :)
 
 # NOTE: On Q3 2021, Le Wagon decided to change the Web Dev curriculum default text editor
 alias stt="echo 'Launching VS Code instead of Sublime Text... (cf ~/.aliases)' && code ."
+
+# Project shortcuts — wrappers that print the command before running it.
+# Scoped to docker-compose projects (e.g. legal-mike); will error in repos without that stack.
+_run() { print -P "%F{cyan}→%f $*"; "$@" }
+
+up()       { _run docker compose up -d "$@" }
+up-logs()  { _run docker compose up "$@" }
+down()     { _run docker compose down "$@" }
+restart()  { _run docker compose exec web bin/rails assets:precompile && _run docker compose exec web bin/rails restart }
+console()  { _run docker compose exec web bundle exec rails console "$@" }
+shell()    { _run docker compose exec web bash "$@" }
+spec()     { _run docker compose exec web bundle exec rspec "$@" }
+routes()   { _run docker compose exec web bin/rails routes "$@" }
