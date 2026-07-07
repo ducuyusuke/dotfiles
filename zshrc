@@ -53,13 +53,17 @@ load-nvmrc() {
 type -a nvm > /dev/null && add-zsh-hook chpwd load-nvmrc
 type -a nvm > /dev/null && load-nvmrc
 
-# Rails and Ruby uses the local `bin` folder to store binstubs.
-# So instead of running `bin/rails` like the doc says, just run `rails`
-# Same for `./node_modules/.bin` and nodejs
-export PATH="./bin:./node_modules/.bin:${PATH}:/usr/local/sbin"
+# NOTE: relative dirs (./bin, ./node_modules/.bin) deliberately NOT on PATH —
+# any repo you cd into could shadow real commands (git, rails) with its own
+# executables, which is dangerous with coding agents running shells in cloned
+# repos. Use `bin/rails` explicitly when a binstub matters.
+export PATH="${PATH}:/usr/local/sbin"
 
 # Store your own aliases in the ~/.aliases file and load the here.
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
+
+# Per-machine secrets (MCP server tokens etc.) — file is not in the dotfiles repo
+[[ -f "$HOME/.env.legalmike" ]] && source "$HOME/.env.legalmike"
 
 # Encoding stuff for the terminal
 export LANG=en_US.UTF-8
